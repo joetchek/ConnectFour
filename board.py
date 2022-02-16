@@ -1,3 +1,4 @@
+#file deals with all the logic for the board
 import numpy as np
 
 def create_board(row, col):

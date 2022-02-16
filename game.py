@@ -1,9 +1,9 @@
-from re import S
+#file deals with all the logic for the game
 import numpy as np
 import pygame
 import sys
 import math 
-from config import create_board, play_piece
+from board import create_board, play_piece
 from variables import *
 
 def create_screen():
