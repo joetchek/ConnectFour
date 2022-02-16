@@ -1,3 +1,4 @@
+from re import S
 import numpy as np
 import pygame
 import sys
@@ -7,10 +8,10 @@ from variables import *
 
 def create_screen():
     #set bg color to black
-    background_color = (0, 0, 0)
+    background_color = BLUE
 
     #create the screen and set title 
-    screen = pygame.display.set_mode((ROW_COUNT*SQUARESIZE, COL_COUNT*SQUARESIZE))
+    screen = pygame.display.set_mode((COL_COUNT*SQUARESIZE, ROW_COUNT*SQUARESIZE))
     pygame.display.set_caption("Connect Four game")
 
     #set bg color of screen
@@ -21,18 +22,29 @@ def create_screen():
 
     return screen
 
-def draw_board(screen):
-    radius = int(SQUARESIZE/2 - 5)
+def draw_board(screen, color):
     for c in range(COL_COUNT):
         for r in range(ROW_COUNT):
-            pygame.draw.rect(screen, BLUE, (c*SQUARESIZE, r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
-            pygame.draw.circle(screen, BLACK, (c*SQUARESIZE/2, r*SQUARESIZE*2),  radius)
+            pygame.draw.circle(screen, color, (c*SQUARESIZE+SQUARESIZE/2, r*SQUARESIZE+SQUARESIZE/2),  RADIUS)
+    
     pygame.display.update()
 
 
-def check_for_events():
+def draw_board_plays(screen, board):
+    for c in range(COL_COUNT):
+        for r in range(ROW_COUNT):
+            if board[r][c] == 1:
+                pygame.draw.circle(screen, RED, (c*SQUARESIZE+SQUARESIZE/2, r*SQUARESIZE+SQUARESIZE/2),  RADIUS)
+            if board[r][c] == 2:
+                pygame.draw.circle(screen, YELLOW, (c*SQUARESIZE+SQUARESIZE/2, r*SQUARESIZE+SQUARESIZE/2),  RADIUS)
+
+    pygame.display.update()
+
+
+def check_for_events(screen):
     running = True
     while(running):
+        draw_board(screen, BLACK)
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
@@ -40,10 +52,14 @@ def check_for_events():
         
 
 def main():
-    create_board(ROW_COUNT, COL_COUNT)
+    board = create_board(ROW_COUNT, COL_COUNT)
     screen = create_screen()
-    draw_board(screen)
-    check_for_events()
+    
+    # board[1][1] = 1
+    # board[2][2] = 2
+    # draw_board_plays(screen, board)
+    
+    check_for_events(screen)
 
 
 if __name__ == "__main__":
