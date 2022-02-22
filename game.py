@@ -83,6 +83,10 @@ def mouse_track(screen, turn_val, column):
     else:
         pygame.draw.rect(screen, BLUE, (600, 600, SQUARESIZE, SQUARESIZE/20))
     
+def print_winner(screen, turn_val, myfont):
+    txt = "Player " + str(turn_val) + " wins!"
+    render_txt = myfont.render(txt, 1, BLACK)
+    screen.blit(render_txt, ((ROW_COUNT*SQUARESIZE)/2 - SQUARESIZE*2 - 65, (COL_COUNT-1)*SQUARESIZE+10))
 
 #function that deals with all my realtime events
 def check_for_events(screen, board):
@@ -104,20 +108,19 @@ def check_for_events(screen, board):
 
             #when the mouse is pressed 
             if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
-                #check if column is fulk
+                #check if column is full
                 if not is_column_full(current_col, board):
                     #get row to play in
                     r_pos = get_highest_row(current_col, board) 
                     #plays a piece
                     play_piece(board, r_pos, current_col, turn_val)
 
-                    #
-                    # put check for win function here    
-                    #
-
+                    #checks for win condition
+                    if check_for_win(board):
+                        print_winner(screen, turn_val, myfont)
+                        game_over = True
                     #checks if the board is full if no win condition
-                    #should be elif
-                    if is_board_full(board):
+                    elif is_board_full(board):
                         txt = myfont.render("Board Full!", 1, BLACK)
                         screen.blit(txt, ((ROW_COUNT*SQUARESIZE)/2 - SQUARESIZE*2, (COL_COUNT-1)*SQUARESIZE+10))
                         game_over = True
