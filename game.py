@@ -82,6 +82,8 @@ def mouse_track(screen, turn_val, column):
         pygame.draw.rect(screen, color, (600, 600, SQUARESIZE, SQUARESIZE/20))
     else:
         pygame.draw.rect(screen, BLUE, (600, 600, SQUARESIZE, SQUARESIZE/20))
+
+    pygame.display.update()
     
 def print_winner(screen, turn_val, myfont):
     txt = "Player " + str(turn_val) + " wins!"
@@ -104,7 +106,12 @@ def check_for_events(screen, board):
             current_col = math.floor(mouse_x/100)
 
             #constanly tracking the mouse position and drawing the appropriate underline
-            mouse_track(screen, turn_val, current_col)
+            #disables and deletes the mouse tracker when gameover
+            if not game_over:
+                mouse_track(screen, turn_val, current_col)
+            else:
+                pygame.draw.rect(screen, BLUE, (current_col*SQUARESIZE, 600, SQUARESIZE, SQUARESIZE/20))
+                pygame.display.update()
 
             #when the mouse is pressed 
             if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
